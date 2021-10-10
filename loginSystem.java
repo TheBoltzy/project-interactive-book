@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
-import java.io.*;
 import java.awt.event.*;
-import javax.swing.text.*;
 
 class loginSystem extends JFrame implements ActionListener {
  
