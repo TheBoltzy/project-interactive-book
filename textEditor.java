@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.text.*;
 
 class textEditor extends JFrame implements ActionListener {
-    // Text component
+    // Text Area
     JTextArea text;
  
     // Frame
