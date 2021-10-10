@@ -87,12 +87,12 @@ class textEditor extends JFrame implements ActionListener {
         mb.add(editMenu);
         mb.add(fontSelector);
         mb.add(fontSize);
-        //mb.add(closeOption);
  
         // Add everything to the frame
         f.setJMenuBar(mb);
         f.getContentPane().add(scrollPane);
         f.setSize(1000, 700);
+        f.setLocationRelativeTo(null);
         f.setVisible(true);;
     }
  
