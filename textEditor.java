@@ -2,68 +2,101 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
-import javax.swing.text.*;
 
 class textEditor extends JFrame implements ActionListener {
-    // Text Area
+    //  Text Area
     JTextArea text;
  
-    // Frame
+    //  Frame
     JFrame f;
 
-    // Font Selector
-    JComboBox fontSelector;
-    JComboBox fontSize;
+    //  Font Selector
+    JComboBox<String> fontSelector;
+    JComboBox<String> fontSize;
+
+    int currChapter;
+
+    public void setText() {
+        String filePath = "chapters/Chapter " + currChapter + ".txt";
+        File fi = new File(filePath);
+        
+        try {
+            //  Initialize str1
+            String str1 = "", str2 = "";
+
+            //  File reader
+            FileReader fr = new FileReader(fi);
+
+            //  Buffered reader
+            BufferedReader br = new BufferedReader(fr);
+
+            //  Set up buffer
+            str2 = br.readLine();
+
+            //  Take the input from the file
+            while ((str1 = br.readLine()) != null) {
+                str2 = str2 + "\n" + str1;
+            }
+
+            //  Set the text
+            text.setText(str2);
+
+            //  Close the reader to prevent leakage
+            br.close();
+        } catch (Exception evt) {
+            JOptionPane.showMessageDialog(f, evt.getMessage());
+        }
+    }
  
-    // Constructor
-    textEditor() {
-        // Create a frame
+    //  Constructor
+    textEditor(int chapter) {
+        currChapter = chapter;
+        
+        //  Create a frame
         f = new JFrame("Text Editor");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
         try {
-            //Set the look and feel to system (windows)
+            //  Set the look and feel to system (windows)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (Exception e) {
         }
  
-        // Create text area
+        //  Create text area
         text = new JTextArea();
         text.setFont(new Font("Georgia", Font.PLAIN, 14));
+        setText();
 
-        // Create a scroll pane
+        //  Create a scroll pane
         JScrollPane scrollPane = new JScrollPane(text);
  
-        // Create a menu bar
+        //  Create a menu bar
         JMenuBar mb = new JMenuBar();
  
-        // Create a file menu
+        //  Create a file menu
         JMenu fileMenu = new JMenu("File");
  
-        // Create file menu items
-        JMenuItem newOption = new JMenuItem("New");
-        JMenuItem openOption = new JMenuItem("Open");
+        //  Create file menu items
+        JMenuItem backOption = new JMenuItem("Back");
         JMenuItem saveOption = new JMenuItem("Save");
  
-        // Add action listeners
-        newOption.addActionListener(this);
-        openOption.addActionListener(this);
+        //  Add action listeners
+        backOption.addActionListener(this);
         saveOption.addActionListener(this);
  
-        fileMenu.add(newOption);
-        fileMenu.add(openOption);
+        fileMenu.add(backOption);
         fileMenu.add(saveOption);
  
-        // Create an edit menu
+        //  Create an edit menu
         JMenu editMenu = new JMenu("Edit");
  
-        // Create edit menu items
+        //  Create edit menu items
         JMenuItem copyOption = new JMenuItem("Copy");
         JMenuItem pasteOption = new JMenuItem("Paste");
         JMenuItem cutOption = new JMenuItem("Cut");
  
-        // Add action listeners
+        //  Add action listeners
         copyOption.addActionListener(this);
         pasteOption.addActionListener(this);
         cutOption.addActionListener(this);
@@ -72,14 +105,14 @@ class textEditor extends JFrame implements ActionListener {
         editMenu.add(pasteOption);
         editMenu.add(cutOption);
 
-        // Create font selector
+        //  Create font selector
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        fontSelector = new JComboBox(fonts);
+        fontSelector = new JComboBox<String>(fonts);
         fontSelector.setSelectedItem("Georgia");
         fontSelector.addActionListener(this);
 
         String[] sizes = {"8", "10", "12", "14", "16", "18", "20", "22", "24", "36", "48", "60"};
-        fontSize = new JComboBox(sizes);
+        fontSize = new JComboBox<String>(sizes);
         fontSize.setSelectedIndex(3);
         fontSize.addActionListener(this);
  
@@ -88,7 +121,7 @@ class textEditor extends JFrame implements ActionListener {
         mb.add(fontSelector);
         mb.add(fontSize);
  
-        // Add everything to the frame
+        //  Add everything to the frame
         f.setJMenuBar(mb);
         f.getContentPane().add(scrollPane);
         f.setSize(1000, 700);
@@ -96,7 +129,7 @@ class textEditor extends JFrame implements ActionListener {
         f.setVisible(true);;
     }
  
-    // If a button is pressed
+    //  If a button is pressed
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
  
@@ -110,78 +143,30 @@ class textEditor extends JFrame implements ActionListener {
             text.cut();
 
         } else if (s.equals("Save")) {
-            // Create an object of JFileChooser class
-            JFileChooser j = new JFileChooser("f:");
- 
-            // Invoke the showsSaveDialog function to show the save dialog
-            int r = j.showSaveDialog(null);
- 
-            if (r == JFileChooser.APPROVE_OPTION) {
- 
-                // Set the label to the path of the selected directory
-                File fi = new File(j.getSelectedFile().getAbsolutePath());
- 
-                try {
-                    // Create a file writer
-                    FileWriter wr = new FileWriter(fi, false);
- 
-                    // Create buffered writer to write
-                    BufferedWriter w = new BufferedWriter(wr);
- 
-                    // Write
-                    w.write(text.getText());
- 
-                    w.flush();
-                    w.close();
-                } catch (Exception evt) {
-                    JOptionPane.showMessageDialog(f, evt.getMessage());
-                }
-            } else {
-                JOptionPane.showMessageDialog(f, "Operation Cancelled");
-            }
-        } else if (s.equals("Open")) {
-            // Create an object of JFileChooser class
-            JFileChooser j = new JFileChooser("f:");
- 
-            // Invoke the showsOpenDialog function to show the save dialog
-            int r = j.showOpenDialog(null);
- 
-            // If the user selects a file
-            if (r == JFileChooser.APPROVE_OPTION) {
-                // Set the label to the path of the selected directory
-                File fi = new File(j.getSelectedFile().getAbsolutePath());
- 
-                try {
-                    // Initialize str1
-                    String str1 = "", str2 = "";
- 
-                    // File reader
-                    FileReader fr = new FileReader(fi);
- 
-                    // Buffered reader
-                    BufferedReader br = new BufferedReader(fr);
- 
-                    // Set up buffer
-                    str2 = br.readLine();
- 
-                    // Take the input from the file
-                    while ((str1 = br.readLine()) != null) {
-                        str2 = str2 + "\n" + str1;
-                    }
- 
-                    // Set the text
-                    text.setText(str2);
+            String filePath = "chapters/Chapter " + currChapter + ".txt";
+            File fi = new File(filePath);
+            
+            try {
+                //  Create a file writer
+                FileWriter wr = new FileWriter(fi, false);
 
-                    //Close the reader to prevent leakage
-                    br.close();
-                } catch (Exception evt) {
-                    JOptionPane.showMessageDialog(f, evt.getMessage());
-                }
-            } else {
-                JOptionPane.showMessageDialog(f, "Operation Cancelled");
+                //  Create buffered writer to write
+                BufferedWriter w = new BufferedWriter(wr);
+
+                //  Write
+                w.write(text.getText());
+
+                w.flush();
+                w.close();
+            } catch (Exception evt) {
+                JOptionPane.showMessageDialog(f, evt.getMessage());
             }
-        } else if (s.equals("New")) {
-            text.setText("");
+        } else if (s.equals("Back")) {
+            //  close text editor and return to chapter selection screen
+            f.setVisible(false);
+            f.dispose();
+
+            chapterPicker chapter = new chapterPicker();
         } else {
             String s2 = (String) fontSelector.getSelectedItem(); 
             int size = Integer.parseInt((String) fontSize.getSelectedItem());
@@ -190,9 +175,9 @@ class textEditor extends JFrame implements ActionListener {
     }
 
 
-    // Main class
+    //  Main class
     public static void main(String args[])
     {
-        textEditor e = new textEditor();
+        textEditor e = new textEditor(6);
     }
 }
