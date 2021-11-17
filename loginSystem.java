@@ -12,8 +12,8 @@ class loginSystem extends JFrame implements ActionListener {
 
     //  Hard-coded usernames and passwords; this will be
     //  replaced by database access in the future
-    String[] usernames = {"username1", "username2", "user3", "thisUserNAME"};
-    String[] passwords = {"password1", "password2", "pass3", "aPaaassWORD"};
+    String[] usernames = {"u", "username1", "username2", "user3", "thisUserNAME"};
+    String[] passwords = {"p", "password1", "password2", "pass3", "aPaaassWORD"};
  
     //  Constructor
     loginSystem() {
@@ -52,7 +52,6 @@ class loginSystem extends JFrame implements ActionListener {
 
         //  Add everything to the frame
         f.add(panel, BorderLayout.CENTER);
-        //f.add(login, BorderLayout.SOUTH);
         f.setSize(375, 100);
         f.setLocationRelativeTo(null);
         f.setVisible(true);;
