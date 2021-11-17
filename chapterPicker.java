@@ -168,7 +168,7 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
             f.dispose();
 
             //  Pass in selected chapter
-            textEditor edit = new textEditor(chpt);            
+            textEditor edit = new textEditor(chpt);          
         }
     }
 

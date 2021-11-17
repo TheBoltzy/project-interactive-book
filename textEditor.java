@@ -78,15 +78,18 @@ class textEditor extends JFrame implements ActionListener {
         JMenu fileMenu = new JMenu("File");
  
         //  Create file menu items
-        JMenuItem backOption = new JMenuItem("Back");
         JMenuItem saveOption = new JMenuItem("Save");
+        JMenuItem commentOption = new JMenuItem("Comment");
+        JMenuItem backOption = new JMenuItem("Back");
  
         //  Add action listeners
-        backOption.addActionListener(this);
         saveOption.addActionListener(this);
+        commentOption.addActionListener(this);
+        backOption.addActionListener(this);
  
-        fileMenu.add(backOption);
         fileMenu.add(saveOption);
+        fileMenu.add(commentOption);
+        fileMenu.add(backOption);
  
         //  Create an edit menu
         JMenu editMenu = new JMenu("Edit");
@@ -161,6 +164,8 @@ class textEditor extends JFrame implements ActionListener {
             } catch (Exception evt) {
                 JOptionPane.showMessageDialog(f, evt.getMessage());
             }
+        } else if (s.equals("Comment")) {
+            comment com = new comment(currChapter);
         } else if (s.equals("Back")) {
             //  close text editor and return to chapter selection screen
             f.setVisible(false);
