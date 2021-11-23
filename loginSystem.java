@@ -66,8 +66,11 @@ class loginSystem extends JFrame implements ActionListener {
         // JDBC connection to database: for testing ATM
         
         /* try {
-			          Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306", s1, s2);
+			          Connection connect = DriverManager.getConnection("jdbc:mysql://68.205.83.101:3306", s1, s2);
 			          Class.forName("com.mysql.cj.jdbc.Driver");
+				  f.setVisible(false);
+        			  f.dispose();
+        			  chapterPicker selector = new chapterPicker();
 		      }	 catch (SQLException except) {
 			        JOptionPane.showMessageDialog(null, except.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE);
 			     }
