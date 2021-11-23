@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
 import java.awt.event.WindowAdapter;
+import java.sql.*;
 
 class comment extends JFrame {
     //  Text Area
