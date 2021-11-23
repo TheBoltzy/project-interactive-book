@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
+import java.sql.*;
 
 class textEditor extends JFrame implements ActionListener {
     //  Text Area
