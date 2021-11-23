@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.*;
 
 class loginSystem extends JFrame implements ActionListener {
  
@@ -62,6 +63,18 @@ class loginSystem extends JFrame implements ActionListener {
         String s1 = user.getText();
         String s2 = new String(pass.getPassword());
 
+        // JDBC connection to database: for testing ATM
+        
+        /* try {
+			          Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306", s1, s2);
+			          Class.forName("com.mysql.cj.jdbc.Driver");
+		      }	 catch (SQLException except) {
+			        JOptionPane.showMessageDialog(null, except.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE);
+			     }
+			        catch (ClassNotFoundException classnotfound) {
+			       JOptionPane.showMessageDialog(loginSystem.this, "Error! Driver not found");
+			     } */
+        
         int userIndex = -1;
 
         //  Compares input username to ones in database
