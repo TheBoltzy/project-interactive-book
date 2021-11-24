@@ -63,47 +63,19 @@ class loginSystem extends JFrame implements ActionListener {
         String s1 = user.getText();
         String s2 = new String(pass.getPassword());
 
-        // JDBC connection to database: for testing ATM
+        // JDBC connection to database
         
-        /* try {
-			          Connection connect = DriverManager.getConnection("jdbc:mysql://68.205.83.101:3306", s1, s2);
-			          Class.forName("com.mysql.cj.jdbc.Driver");
-				  f.setVisible(false);
-        			  f.dispose();
-        			  chapterPicker selector = new chapterPicker();
-		      }	 catch (SQLException except) {
-			        JOptionPane.showMessageDialog(null, except.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE);
-			     }
-			        catch (ClassNotFoundException classnotfound) {
-			       JOptionPane.showMessageDialog(loginSystem.this, "Error! Driver not found");
-			     } */
-        
-        int userIndex = -1;
-
-        //  Compares input username to ones in database
-        for(int i = 0; i < usernames.length; i++) {
-            if (s1.equals(usernames[i])) {
-                userIndex = i;
-                break;
-            }
-        }
-
-        //  Checks if we found a username match
-        if (userIndex == -1) {
-            JOptionPane.showMessageDialog(f, "No such username exists.", "Incorrect Username", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        //  If we reached this point, the username is a match
-        if (!s2.equals(passwords[userIndex])) {
-            JOptionPane.showMessageDialog(f, "Incorrect password.", "Incorrect Password", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        //  If we reached this point, both the username and password are correct
-        f.setVisible(false);
-        f.dispose();
-        chapterPicker selector = new chapterPicker();
+        try {
+		Connection connect = DriverManager.getConnection("jdbc:mysql://68.205.83.101:3306/interactivebook", s1, s2);
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		f.setVisible(false);
+        	f.dispose();
+        	chapterPicker selector = new chapterPicker();
+	} catch (SQLException except) {
+		JOptionPane.showMessageDialog(null, except.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE);
+	} catch (ClassNotFoundException classnotfound) {
+		JOptionPane.showMessageDialog(loginSystem.this, "Error! Driver not found");
+	}
     }
 
 
