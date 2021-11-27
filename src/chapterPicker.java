@@ -21,12 +21,16 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
         File folder = new File("chapters");
         File[] files = folder.listFiles();
         chapterCount = folder.list().length;
+        //grabs the list of chapters and stores how many we have in chapterCount
+
         String s;
         int[] nums = new int[chapterCount];
 
         for(int i = 0; i < chapterCount; i++) {
             s = files[i].getName();
             s = s.substring(8, s.length() - 4);
+            //removes the .txt from the filenames and puts chapter numbers into nums[]
+            
             nums[i] = Integer.parseInt(s);
         }
 
