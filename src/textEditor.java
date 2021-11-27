@@ -16,9 +16,11 @@ class textEditor extends JFrame implements ActionListener {
     JComboBox<String> fontSize;
 
     int currChapter;
+    int bookNum;
+    //GRAB HERE
 
     public void setText() {
-        String filePath = "chapters/Chapter " + currChapter + ".txt";
+        String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " + currChapter + ".txt";
         File fi = new File(filePath);
         
         try {
@@ -50,8 +52,9 @@ class textEditor extends JFrame implements ActionListener {
     }
  
     //  Constructor
-    textEditor(int chapter) {
+    textEditor(int book, int chapter) {
         currChapter = chapter;
+        bookNum = book;
         
         //  Create a frame
         f = new JFrame("Text Editor");
@@ -147,7 +150,7 @@ class textEditor extends JFrame implements ActionListener {
             text.cut();
 
         } else if (s.equals("Save")) {
-            String filePath = "chapters/Chapter " + currChapter + ".txt";
+            String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " + currChapter + ".txt";
             File fi = new File(filePath);
             
             try {
@@ -172,7 +175,7 @@ class textEditor extends JFrame implements ActionListener {
             f.setVisible(false);
             f.dispose();
 
-            chapterPicker chapter = new chapterPicker();
+            chapterPicker chap = new chapterPicker(bookNum);
         } else {
             String s2 = (String) fontSelector.getSelectedItem(); 
             int size = Integer.parseInt((String) fontSize.getSelectedItem());
@@ -184,6 +187,6 @@ class textEditor extends JFrame implements ActionListener {
     //  Main class
     public static void main(String args[])
     {
-        textEditor e = new textEditor(6);
+        textEditor e = new textEditor(1, 1);
     }
 }

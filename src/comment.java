@@ -17,9 +17,11 @@ class comment extends JFrame {
     JComboBox<String> fontSize;
 
     int currChapter;
+    int bookNum = 1;
+    //GRAB HERE
 
     public void setText() {
-        String filePath = "comments/comment" + currChapter + ".txt";
+        String filePath = "../lib/book" + bookNum + "/comments/comment" + currChapter + ".txt";
         File fi = new File(filePath);
 
         try {
@@ -67,7 +69,7 @@ class comment extends JFrame {
         //  Saves content on close
         f.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                String filePath = "comments/comment" + chapter + ".txt";
+                String filePath = "../lib/book" + bookNum + "/comments/comment" + chapter + ".txt";
                 File fi = new File(filePath);
             
             try {

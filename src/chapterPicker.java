@@ -11,14 +11,17 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
  
     //  Global swing components
     JFrame f;
+    DefaultListModel<String> listModel;
     JList<String> list;
     JButton button;
     int chapterCount;
-    DefaultListModel<String> listModel;
+    int bookNum;
 
     //  Generates chapter array based on the number we pass in
     private DefaultListModel<String> createChapters() {
-        File folder = new File("chapters");
+        //GRAB CHOSEN BOOK NUMBER HERE
+        
+        File folder = new File("../lib/books/book" + bookNum + "/chapters");
         File[] files = folder.listFiles();
         chapterCount = folder.list().length;
         //grabs the list of chapters and stores how many we have in chapterCount
@@ -46,10 +49,11 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
     }
 
     //  Constructor
-    chapterPicker() {
+    chapterPicker(int book) {
         //  Create a frame
         f = new JFrame("Choose a Chapter");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        bookNum = book;
  
         try {
             //  Set the look and feel to system (windows)
@@ -63,17 +67,17 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
         JMenu menu = new JMenu("Menu");
         JMenuItem newChapter = new JMenuItem("New Chapter");
         JMenuItem deleteChapter = new JMenuItem("Delete Chapter");
-        JMenuItem logOut = new JMenuItem("Log Out");
+        JMenuItem back = new JMenuItem("Back");
 
         // Adding action listeners to menu items
         newChapter.addActionListener(this);
         deleteChapter.addActionListener(this);
-        logOut.addActionListener(this);
+        back.addActionListener(this);
 
         //  Adding items to menu bar
         menu.add(newChapter);
         menu.add(deleteChapter);
-        menu.add(logOut);
+        menu.add(back);
         mb.add(menu);
 
         //  Generate chapter array
@@ -129,7 +133,7 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
         try {
             chapterCount++;
             listModel.addElement("Chapter " + chapterCount);
-            File newChapter = new File("chapters\\Chapter " + chapterCount + ".txt");
+            File newChapter = new File("../lib/books/book" + bookNum + "/chapters/Chapter " + chapterCount + ".txt");
             newChapter.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,8 +146,11 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
         String s = e.getActionCommand();
  
         if (s.equals("New Chapter")) {
-            addChapter();
-
+            if (chapterCount >= 100) {
+                JOptionPane.showMessageDialog(f, "Reached maximum number of chapters.\nNo more chapters may be created.");
+            } else {
+                addChapter();
+            }
         } else if (s.equals("Delete Chapter")) {
             //  Not being used now as deleting specific chapters
             //  causes problems, but I want to keep the code
@@ -155,17 +162,18 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 
             if (confirm == 0) { //   Yes, delete
-                File chap = new File("chapters\\" + listModel.elementAt(chapterCount-1) + ".txt");
+                File chap = new File("../lib/books/book" + bookNum + "/chapters/" + listModel.elementAt(chapterCount-1) + ".txt");
                 chap.delete();
                 listModel.remove(chapterCount-1);
                 chapterCount--;
             }
             //  Otherwise there's nothing to do
 
-        } else if (s.equals("Log Out")) {
+        } else if (s.equals("Back")) {
             f.setVisible(false);
             f.dispose();
-            loginSystem login = new loginSystem();
+            
+            bookPicker book = new bookPicker();
 
         } else {
             int chpt = list.getSelectedIndex() + 1;
@@ -173,13 +181,13 @@ class chapterPicker extends JFrame implements ActionListener, ListSelectionListe
             f.dispose();
 
             //  Pass in selected chapter
-            textEditor edit = new textEditor(chpt);          
+            textEditor edit = new textEditor(bookNum, chpt);          
         }
     }
 
 
     public static void main(String args[])
     {
-        chapterPicker e = new chapterPicker();
+        chapterPicker e = new chapterPicker(1);
     }
 }
