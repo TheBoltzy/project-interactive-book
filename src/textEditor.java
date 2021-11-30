@@ -5,141 +5,145 @@ import java.awt.event.*;
 import java.sql.*;
 
 class textEditor extends JFrame implements ActionListener {
-    //  Text Area
+    // Text Area
     JTextArea text;
- 
-    //  Frame
+
+    // Frame
     JFrame f;
 
-    //  Font Selector
+    // Font Selector
     JComboBox<String> fontSelector;
     JComboBox<String> fontSize;
 
     int currChapter;
     int bookNum;
-    //GRAB HERE
+    // GRAB HERE
+
+    private Repository repo = new Repository();
 
     public void setText() {
-        String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " + currChapter + ".txt";
-        File fi = new File(filePath);
-        
-        try {
-            //  Initialize str1
-            String str1 = "", str2 = "";
+        // String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " +
+        // currChapter + ".txt";
+        // File fi = new File(filePath);
 
-            //  File reader
-            FileReader fr = new FileReader(fi);
+        // try {
+        // // Initialize str1
+        // String str1 = "", str2 = "";
 
-            //  Buffered reader
-            BufferedReader br = new BufferedReader(fr);
+        // // File reader
+        // FileReader fr = new FileReader(fi);
 
-            //  Set up buffer
-            str2 = br.readLine();
+        // // Buffered reader
+        // BufferedReader br = new BufferedReader(fr);
 
-            //  Take the input from the file
-            while ((str1 = br.readLine()) != null) {
-                str2 = str2 + "\n" + str1;
-            }
+        // // Set up buffer
+        // str2 = br.readLine();
 
-            //  Set the text
-            text.setText(str2);
+        // // Take the input from the file
+        // while ((str1 = br.readLine()) != null) {
+        // str2 = str2 + "\n" + str1;
+        // }
 
-            //  Close the reader to prevent leakage
-            br.close();
-        } catch (Exception evt) {
-            JOptionPane.showMessageDialog(f, evt.getMessage());
-        }
+        // // Set the text
+        // text.setText(str2);
+
+        // // Close the reader to prevent leakage
+        // br.close();
+        // } catch (Exception evt) {
+        // JOptionPane.showMessageDialog(f, evt.getMessage());
+        // }
+        text.setText(repo.geChapterBody(bookNum, currChapter));
     }
- 
-    //  Constructor
+
+    // Constructor
     textEditor(int book, int chapter) {
         currChapter = chapter;
         bookNum = book;
-        
-        //  Create a frame
+
+        // Create a frame
         f = new JFrame("Text Editor");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
- 
+
         try {
-            //  Set the look and feel to system (windows)
+            // Set the look and feel to system (windows)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
         }
-        catch (Exception e) {
-        }
- 
-        //  Create text area
+
+        // Create text area
         text = new JTextArea();
         text.setFont(new Font("Georgia", Font.PLAIN, 14));
         setText();
 
-        //  Create a scroll pane
+        // Create a scroll pane
         JScrollPane scrollPane = new JScrollPane(text);
- 
-        //  Create a menu bar
+
+        // Create a menu bar
         JMenuBar mb = new JMenuBar();
- 
-        //  Create a file menu
+
+        // Create a file menu
         JMenu fileMenu = new JMenu("File");
- 
-        //  Create file menu items
+
+        // Create file menu items
         JMenuItem saveOption = new JMenuItem("Save");
         JMenuItem commentOption = new JMenuItem("Comment");
         JMenuItem backOption = new JMenuItem("Back");
- 
-        //  Add action listeners
+
+        // Add action listeners
         saveOption.addActionListener(this);
         commentOption.addActionListener(this);
         backOption.addActionListener(this);
- 
+
         fileMenu.add(saveOption);
         fileMenu.add(commentOption);
         fileMenu.add(backOption);
- 
-        //  Create an edit menu
+
+        // Create an edit menu
         JMenu editMenu = new JMenu("Edit");
- 
-        //  Create edit menu items
+
+        // Create edit menu items
         JMenuItem copyOption = new JMenuItem("Copy");
         JMenuItem pasteOption = new JMenuItem("Paste");
         JMenuItem cutOption = new JMenuItem("Cut");
- 
-        //  Add action listeners
+
+        // Add action listeners
         copyOption.addActionListener(this);
         pasteOption.addActionListener(this);
         cutOption.addActionListener(this);
- 
+
         editMenu.add(copyOption);
         editMenu.add(pasteOption);
         editMenu.add(cutOption);
 
-        //  Create font selector
+        // Create font selector
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         fontSelector = new JComboBox<String>(fonts);
         fontSelector.setSelectedItem("Georgia");
         fontSelector.addActionListener(this);
 
-        String[] sizes = {"8", "10", "12", "14", "16", "18", "20", "22", "24", "36", "48", "60"};
+        String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "22", "24", "36", "48", "60" };
         fontSize = new JComboBox<String>(sizes);
         fontSize.setSelectedIndex(3);
         fontSize.addActionListener(this);
- 
+
         mb.add(fileMenu);
         mb.add(editMenu);
         mb.add(fontSelector);
         mb.add(fontSize);
- 
-        //  Add everything to the frame
+
+        // Add everything to the frame
         f.setJMenuBar(mb);
         f.getContentPane().add(scrollPane);
         f.setSize(1000, 700);
         f.setLocationRelativeTo(null);
-        f.setVisible(true);;
+        f.setVisible(true);
+        ;
     }
- 
-    //  If a button is pressed
+
+    // If a button is pressed
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
- 
+
         if (s.equals("Copy")) {
             text.copy();
 
@@ -150,43 +154,44 @@ class textEditor extends JFrame implements ActionListener {
             text.cut();
 
         } else if (s.equals("Save")) {
-            String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " + currChapter + ".txt";
-            File fi = new File(filePath);
-            
-            try {
-                //  Create a file writer
-                FileWriter wr = new FileWriter(fi, false);
+            // String filePath = "../lib/books/book" + bookNum + "/chapters/Chapter " +
+            // currChapter + ".txt";
+            // File fi = new File(filePath);
 
-                //  Create buffered writer to write
-                BufferedWriter w = new BufferedWriter(wr);
+            // try {
+            // // Create a file writer
+            // FileWriter wr = new FileWriter(fi, false);
 
-                //  Write
-                w.write(text.getText());
+            // // Create buffered writer to write
+            // BufferedWriter w = new BufferedWriter(wr);
 
-                w.flush();
-                w.close();
-            } catch (Exception evt) {
-                JOptionPane.showMessageDialog(f, evt.getMessage());
-            }
+            // // Write
+            // w.write(text.getText());
+
+            // w.flush();
+            // w.close();
+            // } catch (Exception evt) {
+            // JOptionPane.showMessageDialog(f, evt.getMessage());
+            // }
+            System.out.println(text.getText());
+            repo.saveChapter(bookNum, currChapter, text.getText());
         } else if (s.equals("Comment")) {
-            comment com = new comment(currChapter);
+            comment com = new comment(currChapter, bookNum);
         } else if (s.equals("Back")) {
-            //  close text editor and return to chapter selection screen
+            // close text editor and return to chapter selection screen
             f.setVisible(false);
             f.dispose();
 
             chapterPicker chap = new chapterPicker(bookNum);
         } else {
-            String s2 = (String) fontSelector.getSelectedItem(); 
+            String s2 = (String) fontSelector.getSelectedItem();
             int size = Integer.parseInt((String) fontSize.getSelectedItem());
             text.setFont(new Font(s2, Font.PLAIN, size));
         }
     }
 
-
-    //  Main class
-    public static void main(String args[])
-    {
+    // Main class
+    public static void main(String args[]) {
         textEditor e = new textEditor(1, 1);
     }
 }

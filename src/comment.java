@@ -6,118 +6,122 @@ import java.awt.event.WindowAdapter;
 import java.sql.*;
 
 class comment extends JFrame {
-    //  Text Area
+    // Text Area
     JTextArea text;
- 
-    //  Frame
+
+    // Frame
     JFrame f;
 
-    //  Font Selector
+    // Font Selector
     JComboBox<String> fontSelector;
     JComboBox<String> fontSize;
 
     int currChapter;
-    int bookNum = 1;
-    //GRAB HERE
+    int bookNum;
+    // GRAB HERE
+
+    Repository repo = new Repository();
 
     public void setText() {
-        String filePath = "../lib/book" + bookNum + "/comments/comment" + currChapter + ".txt";
-        File fi = new File(filePath);
+        // String filePath = "../lib/book" + bookNum + "/comments/comment" + currChapter
+        // + ".txt";
+        // File fi = new File(filePath);
 
-        try {
-            fi.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //    Try to create a new comment file if one has not already been made
-        
-        try {
-            //  Initialize str1
-            String str1 = "", str2 = "";
+        // try {
+        // fi.createNewFile();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // } // Try to create a new comment file if one has not already been made
 
-            //  File reader
-            FileReader fr = new FileReader(fi);
+        // try {
+        // // Initialize str1
+        // String str1 = "", str2 = "";
 
-            //  Buffered reader
-            BufferedReader br = new BufferedReader(fr);
+        // // File reader
+        // FileReader fr = new FileReader(fi);
 
-            //  Set up buffer
-            str2 = br.readLine();
+        // // Buffered reader
+        // BufferedReader br = new BufferedReader(fr);
 
-            //  Take the input from the file
-            while ((str1 = br.readLine()) != null) {
-                str2 = str2 + "\n" + str1;
-            }
+        // // Set up buffer
+        // str2 = br.readLine();
 
-            //  Set the text
-            text.setText(str2);
+        // // Take the input from the file
+        // while ((str1 = br.readLine()) != null) {
+        // str2 = str2 + "\n" + str1;
+        // }
 
-            //  Close the reader to prevent leakage
-            br.close();
-        } catch (Exception evt) {
-            JOptionPane.showMessageDialog(f, evt.getMessage());
-        }
+        // // Set the text
+        // text.setText(str2);
+
+        // // Close the reader to prevent leakage
+        // br.close();
+        // } catch (Exception evt) {
+        // JOptionPane.showMessageDialog(f, evt.getMessage());
+        // }
+        text.setText(repo.getCommentsFromChapter(bookNum, currChapter));
     }
- 
-    //  Constructor
-    comment(int chapter) {
+
+    // Constructor
+    comment(int chapter, int bookNum) {
         currChapter = chapter;
-        
-        //  Create a frame
+        this.bookNum = bookNum;
+
+        // Create a frame
         f = new JFrame("Comment");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //  Saves content on close
+        // Saves content on close
         f.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                String filePath = "../lib/book" + bookNum + "/comments/comment" + chapter + ".txt";
-                File fi = new File(filePath);
-            
-            try {
-                //  Create a file writer
-                FileWriter wr = new FileWriter(fi, false);
+                // String filePath = "../lib/book" + bookNum + "/comments/comment" + chapter +
+                // ".txt";
+                // File fi = new File(filePath);
 
-                //  Create buffered writer to write
-                BufferedWriter w = new BufferedWriter(wr);
+                // try {
+                // // Create a file writer
+                // FileWriter wr = new FileWriter(fi, false);
 
-                //  Write
-                w.write(text.getText());
+                // // Create buffered writer to write
+                // BufferedWriter w = new BufferedWriter(wr);
 
-                w.flush();
-                w.close();
-            } catch (Exception evt) {
-                JOptionPane.showMessageDialog(f, evt.getMessage());
+                // // Write
+                // w.write(text.getText());
+
+                // w.flush();
+                // w.close();
+                // } catch (Exception evt) {
+                // JOptionPane.showMessageDialog(f, evt.getMessage());
+                // }
+
+                repo.saveComment(bookNum, currChapter, text.getText());
             }
-            
-            }
-        
+
         });
- 
+
         try {
-            //  Set the look and feel to system (windows)
+            // Set the look and feel to system (windows)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
         }
-        catch (Exception e) {
-        }
- 
-        //  Create text area
+
+        // Create text area
         text = new JTextArea();
         text.setFont(new Font("Georgia", Font.PLAIN, 14));
         setText();
 
-        //  Create a scroll pane
+        // Create a scroll pane
         JScrollPane scrollPane = new JScrollPane(text);
- 
-        //  Add everything to the frame
+
+        // Add everything to the frame
         f.getContentPane().add(scrollPane);
         f.setSize(550, 450);
         f.setLocation(1000, 300);
         f.setVisible(true);
     }
 
-
-    //  Main class
-    public static void main(String args[])
-    {
-        comment e = new comment(6);
+    // Main class
+    public static void main(String args[]) {
+        comment e = new comment(1, 1);
     }
 }

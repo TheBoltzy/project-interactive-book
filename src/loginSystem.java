@@ -91,8 +91,8 @@ class loginSystem extends JFrame implements ActionListener {
             }
 
             try {
-                Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/interactivebook", "root",
-                        "elPass2020");
+                Connection connect = DriverManager.getConnection("jdbc:mysql://68.205.83.101:3306/interactivebook", s1,
+                        s2);
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Boolean attempt = true;
 
@@ -100,9 +100,11 @@ class loginSystem extends JFrame implements ActionListener {
                     loginAttempts++;
                 }
 
+                Repository repo = new Repository();
+
                 f.setVisible(false);
                 f.dispose();
-                bookPicker selector = new bookPicker();
+                bookPicker selector = new bookPicker(repo);
 
             } catch (SQLException except) {
                 JOptionPane.showMessageDialog(null, except.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE);
