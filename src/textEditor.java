@@ -143,7 +143,6 @@ class textEditor extends JFrame implements ActionListener {
     // If a button is pressed
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-
         if (s.equals("Copy")) {
             text.copy();
 
