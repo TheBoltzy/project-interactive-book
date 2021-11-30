@@ -46,9 +46,8 @@ class loginSystem extends JFrame implements ActionListener {
         JButton login = new JButton("Login");
         login.addActionListener(this);
 
-        JButton train = new JButton("?");
+        JButton train = new JButton("Help");
         train.addActionListener(this);
-        train.setPreferredSize(new Dimension(20, 20));
 
         // Add fields and labels
         panel.add(userL);
@@ -68,9 +67,9 @@ class loginSystem extends JFrame implements ActionListener {
     // If a button is pressed
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        if (s == "?") {
+        if (s == "Help") {
             try {
-                File pdf = new File("../lib/training.pdf");
+                File pdf = new File("lib/training.pdf");
                 Desktop.getDesktop().open(pdf);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(loginSystem.this, "Cannot Open Training PDF\nNeeds PDF Application");
